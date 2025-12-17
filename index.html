@@ -39,7 +39,22 @@
   .text {
     margin-top: 14px;
     font-size: 14px;
-    opacity: 0.9;
+  }
+
+  /* Flicker image */
+  #flicker {
+    position: fixed;
+    inset: 0;
+    background: black;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+
+  #flicker img {
+    max-width: 60%;
+    max-height: 60%;
   }
 </style>
 </head>
@@ -56,9 +71,14 @@
   <div class="text" id="text">Starting…</div>
 </div>
 
+<div id="flicker">
+  <img src="yellow-jacket.png" alt="">
+</div>
+
 <script>
   const fill = document.getElementById("fill");
   const text = document.getElementById("text");
+  const flicker = document.getElementById("flicker");
 
   let percent = 0;
 
@@ -69,7 +89,7 @@
     "Finalizing…"
   ];
 
-  // Random freeze time between 1.5s and 5s
+  // Random freeze time (1.5–5s)
   const freezeTime = Math.floor(Math.random() * 3500) + 1500;
 
   const timer = setInterval(() => {
@@ -85,17 +105,31 @@
       fill.style.width = "99%";
       text.textContent = "Almost done…";
 
-      setTimeout(() => {
-        fill.style.width = "100%";
-        text.textContent = "Complete";
+      setTimeout(startFlicker, freezeTime);
+    }
+  }, 80);
+
+  function startFlicker() {
+    let flashes = Math.floor(Math.random() * 3) + 2; // 2–4 flickers
+    let count = 0;
+
+    const flickerInterval = setInterval(() => {
+      flicker.style.display =
+        flicker.style.display === "flex" ? "none" : "flex";
+
+      count++;
+
+      if (count >= flashes * 2) {
+        clearInterval(flickerInterval);
+        flicker.style.display = "none";
 
         setTimeout(() => {
           window.location.href =
             "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-        }, 500);
-      }, freezeTime);
-    }
-  }, 80);
+        }, 200);
+      }
+    }, Math.random() * 120 + 80);
+  }
 </script>
 
 </body>
