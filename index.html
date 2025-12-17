@@ -32,13 +32,14 @@
 
   .fill {
     height: 100%;
-    width: 1px; /* START VISIBLE */
+    width: 1px;
     background: #00ccff;
   }
 
   .text {
     margin-top: 14px;
     font-size: 14px;
+    opacity: 0.9;
   }
 </style>
 </head>
@@ -68,9 +69,14 @@
     "Finalizing…"
   ];
 
+  // Random freeze time between 1.5s and 5s
+  const freezeTime = Math.floor(Math.random() * 3500) + 1500;
+
   const timer = setInterval(() => {
     if (percent < 99) {
-      percent += 1;
+      percent += Math.random() * 2 + 0.5;
+      if (percent > 99) percent = 99;
+
       fill.style.width = percent + "%";
       text.textContent = messages[Math.floor(percent / 25)] || "Loading…";
     } else {
@@ -87,7 +93,7 @@
           window.location.href =
             "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         }, 500);
-      }, 3000); // freeze time
+      }, freezeTime);
     }
   }, 80);
 </script>
